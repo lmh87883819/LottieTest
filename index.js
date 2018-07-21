@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
 import App from './App';
-import Animated from './Animated'
+import Index from './src/index'
 
-AppRegistry.registerComponent('lottieTest', () => Animated);
+AppRegistry.registerComponent('lottieTest', () => Index);
