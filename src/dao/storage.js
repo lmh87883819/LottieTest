@@ -1,5 +1,6 @@
 import Storage from 'react-native-storage';
 import { AsyncStorage } from 'react-native';
+import sync from './storage.sync'
 
 var storage = new Storage({
     // maximum capacity, default 1000 
@@ -19,9 +20,7 @@ var storage = new Storage({
     // if data was not found in storage or expired,
     // the corresponding sync method will be invoked and return 
     // the latest data.
-    sync : {
-        // we'll talk about the details later.
-    }
+    sync : sync
 })	
 
 export default storage

@@ -1,38 +1,24 @@
-import Storage from 'react-native-storage';
-import { AsyncStorage } from 'react-native';
-
-var storage = new Storage({
-    // maximum capacity, default 1000 
-    size: 1000,
-
-    // Use AsyncStorage for RN, or window.localStorage for web.
-    // If not set, data would be lost after reload.
-    storageBackend: AsyncStorage,
-    
-    // expire time, default 1 day(1000 * 3600 * 24 milliseconds).
-    // can be null, which means never expire.
-    defaultExpires: 1000 * 3600 * 24,
-    
-    // cache data in the memory. default is true.
-    enableCache: true,
-    
-    // if data was not found in storage or expired,
-    // the corresponding sync method will be invoked and return 
-    // the latest data.
-    sync : {
-        // we'll talk about the details later.
-    }
-})	
+import storage from './storage'
 
 //movie模块storage操作
 export default movieStorage = {
+    //根据key缓存数据
     movieStorageSave (key,data){
         return new Promise((resolve,reject)=>{
             storage.save({
                 key,data,
-            });
+            })
         })
     },
+    //根据类型及页码缓存数据
+    movieStorageSaveWithPage (key,id,data){
+        return new Promise((resolve,reject) => {
+            storage.save({
+                key,id,data
+            })
+        })
+    },
+    //根据key获取数据
     movieStorageLoad (key,params){
         // load
         return new Promise((resolve,reject)=>{
@@ -49,12 +35,38 @@ export default movieStorage = {
             }).then(res => {
                 resolve(res)
             }).catch(err => {
-                console.log(err);
+                //console.log(err)
+                resolve(null)
             })
         })
     },
-    clearAll (){
-        storage.clearMap();
+    //根据类型及页码获取缓存数据
+    movieStorageLoadWithPage (key,id,params){
+        // load
+        console.log(key,id);
+        return new Promise((resolve,reject)=>{
+            storage.load({
+                key,id,
+                autoSync: true,
+                syncInBackground: false,
+                syncParams: {
+                    extraFetchOptions: {
+                        params:params
+                    },
+                    someFlag: true,
+                },
+            }).then(res => {
+                resolve(res)
+            }).catch(err => {
+                resolve(null)
+            })
+        })
+    },
+    clearAll (key){
+        storage.remove({
+            key,id:1
+            // key
+        });
     }
 }
 

@@ -6,5 +6,4 @@ export const Alltype = [
     {id:4,name:'综艺'},
     {id:6,name:'音乐'},
     {id:7,name:'动漫'},
-    {id:11,name:'舞曲'},
 ]
